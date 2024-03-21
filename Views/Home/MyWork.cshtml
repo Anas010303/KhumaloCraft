@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Products";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            margin-bottom: 60px; /* Adjust this value as needed */
+        }
+
+        h1 {
+            color: #009688;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .product {
+            display: flex;
+            margin-bottom: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+            .product img {
+                width: 200px;
+                height: auto;
+                object-fit: cover;
+                border-radius: 10px 0 0 10px;
+            }
+
+        .product-details {
+            padding: 20px;
+        }
+
+        h2 {
+            color: #009688;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #777;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+
+        <div class="product">
+            <img src="~/images/handcraftM.jpg" alt="Handcrafted Mug">
+            <div class="product-details">
+                <h2>Handcrafted Mug</h2>
+                <p class="price">R80.99</p>
+                <p class="description">This beautiful handcrafted mug is perfect for your morning coffee ritual. Made with care by our talented artisans.</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <img src="~/images/handwovenB.jpg" alt="Handwoven Basket">
+            <div class="product-details">
+                <h2>Handwoven Basket</h2>
+                <p class="price">R94.99</p>
+                <p class="description">Store your essentials in style with this handwoven basket. Each piece is unique, crafted with love and attention to detail.</p>
+            </div>
+        </div>
+
+        <!-- Add more product entries as needed -->
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 - KhumaloCraft Emporium - <a href="#">Privacy</a></p>
+    </footer>
+
+</body>
+</html>

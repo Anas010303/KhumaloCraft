@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to KhumaloCraft Emporium</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #009688;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #009688;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn:hover {
+                background-color: #00796b;
+            }
+
+        .footer {
+            background-color: #444;
+            color: #fff;
+            padding: 20px 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+            .footer p {
+                margin: 0;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome to KhumaloCraft Emporium</h1>
+        <p>Explore our collection of handcrafted products.</p>
+        <button class="btn" onclick="exploreNow()">Explore Now</button>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 - KhumaloCraft Emporium - <a href="#">Privacy</a></p>
+    </footer>
+
+    <script>
+        function exploreNow() {
+            
+            window.location.href = '@Url.Action("MyWork", "Home")';  
+        }
+    </script>
+
+</body>
+</html>
