@@ -1,16 +1,16 @@
-﻿@{
-    ViewData["Title"] = "Products";
-}
+﻿@model IEnumerable<WebApplicationPOE1.ViewModels.ProductViewModel>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-color: #f9f9f9;
             color: #333;
             margin: 0;
             padding: 0;
@@ -19,82 +19,93 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
-            margin-bottom: 60px; /* Adjust this value as needed */
+            padding: 40px;
+            text-align: center;
         }
 
         h1 {
             color: #009688;
+            font-size: 36px;
             margin-bottom: 20px;
-            text-align: center;
         }
 
         .product {
             display: flex;
-            margin-bottom: 30px;
-            background-color: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            align-items: center;
+            margin-bottom: 40px;
         }
 
             .product img {
-                width: 200px;
-                height: auto;
-                object-fit: cover;
-                border-radius: 10px 0 0 10px;
+                width: 150px;
+                height: 150px;
+                border-radius: 8px;
+                margin-right: 20px;
             }
 
         .product-details {
-            padding: 20px;
+            text-align: left;
         }
 
-        h2 {
+            .product-details h2 {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+
+        .price {
+            font-size: 20px;
             color: #009688;
             margin-bottom: 10px;
         }
 
-        .price {
-            font-weight: bold;
-            color: #666;
-            margin-bottom: 10px;
+        .description {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
-        .description {
-            color: #777;
-            line-height: 1.5;
+        .order-button {
+            background-color: #009688;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .order-button:hover {
+                background-color: #00796b;
+            }
+
+
+        footer {
+            background-color: #333;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 100px; /* Add space between content and footer */
         }
     </style>
 </head>
 <body>
-
     <div class="container">
         <h1>@ViewData["Title"]</h1>
-
-        <div class="product">
-            <img src="~/images/handcraftM.jpg" alt="Handcrafted Mug">
-            <div class="product-details">
-                <h2>Handcrafted Mug</h2>
-                <p class="price">R80.99</p>
-                <p class="description">This beautiful handcrafted mug is perfect for your morning coffee ritual. Made with care by our talented artisans.</p>
+        @foreach (var product in Model)
+        {
+            <div class="product">
+                <img src="@product.ImageUrl" alt="@product.Name">
+                <div class="product-details">
+                    <h2>@product.Name</h2>
+                    <p class="price">@product.Price.ToString("C")</p>
+                    <p class="description">@product.Description</p>
+                    <button class="order-button">Order</button>
+                </div>
             </div>
-        </div>
-
-        <div class="product">
-            <img src="~/images/handwovenB.jpg" alt="Handwoven Basket">
-            <div class="product-details">
-                <h2>Handwoven Basket</h2>
-                <p class="price">R94.99</p>
-                <p class="description">Store your essentials in style with this handwoven basket. Each piece is unique, crafted with love and attention to detail.</p>
-            </div>
-        </div>
-
-        <!-- Add more product entries as needed -->
+        }
     </div>
 
-    <footer class="footer">
-        <p>© 2024 - KhumaloCraft Emporium - <a href="#">Privacy</a></p>
+    <footer>
+        &copy; 2024 Your Company | All Rights Reserved
     </footer>
-
 </body>
 </html>

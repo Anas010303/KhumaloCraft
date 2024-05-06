@@ -1,0 +1,12 @@
+﻿@model WebApplicationPOE1.Models.Product
+
+<h2>@Model.Name</h2>
+<p>Description: @Model.Description</p>
+<p>Price: @Model.Price</p>
+
+<form asp-action="PlaceOrder" method="post">
+    <input type="hidden" name="ProductId" value="@Model.ProductId">
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="Quantity" value="1" min="1" required>
+    <button type="submit">Place Order</button>
+</form>

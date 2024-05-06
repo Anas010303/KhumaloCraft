@@ -1,0 +1,10 @@
+﻿<!-- Orders.cshtml -->
+@model IEnumerable<WebApplicationPOE1.Models.Transaction>
+
+<h2>My Orders</h2>
+<ul>
+    @foreach (var Transaction in Model)
+    {
+        <li>@Transaction.Product.Name - @Transaction.TransactionDate - @Transaction.Quantity - @Transaction.TotalAmount</li>
+    }
+</ul>

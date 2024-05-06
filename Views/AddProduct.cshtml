@@ -1,0 +1,11 @@
+﻿@model WebApplicationPOE1.Models.Product
+
+<form asp-action="AddProduct" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" placeholder="Product Name" required>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <!-- Add other input fields for product details -->
+    <button type="submit" class="btn btn-primary">Add Product</button>
+</form>

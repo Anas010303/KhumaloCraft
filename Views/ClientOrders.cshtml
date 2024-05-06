@@ -1,0 +1,10 @@
+﻿@model List<WebApplicationPOE1.Models.Transaction>
+
+<!-- Client Orders Page -->
+<h2>Client Orders</h2>
+<ul>
+    @foreach (var transaction in Model)
+    {
+        <li>@transaction.Product.Name - @transaction.TransactionDate - @transaction.Quantity - @transaction.TotalAmount</li>
+    }
+</ul>

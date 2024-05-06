@@ -15,13 +15,19 @@
             color: #333;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure the body takes at least the full height of the viewport */
         }
 
         .container {
+            flex: 1; /* Grow to fill remaining vertical space */
             max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
+            margin: 20px auto; /* Center the container */
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
@@ -30,35 +36,82 @@
             margin-bottom: 20px;
         }
 
-        p {
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
             font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 30px;
+            margin-bottom: 8px;
+            color: #333;
         }
 
-        .contact-info {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
         }
 
-            .contact-info p {
-                margin-bottom: 15px;
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        button[type="submit"] {
+            background-color: #009688;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            button[type="submit"]:hover {
+                background-color: #00796b;
             }
 
-                .contact-info p strong {
-                    color: #009688;
-                }
+        footer {
+            background-color: #333;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 100px; /* Add space between content and footer */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Contact Page</h1>
         <div class="contact-info">
-            <p><strong>Email:</strong> contact@example.com</p>
-            <p><strong>Phone:</strong> +1234567890</p>
+            <p><strong>Email:</strong> contact@anas.co.za</p>
+            <p><strong>Phone:</strong> +27 934567890</p>
         </div>
+
+        <h2>Get in Touch</h2>
+        <form method="post" action="/submit-contact">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
     </div>
+
+    <footer>
+        &copy; 2024 Your Company | All Rights Reserved
+    </footer>
 </body>
 </html>
