@@ -1,0 +1,23 @@
+﻿@model WebApplicationPOE1.Models.PaymentViewModel
+
+<h2>Payment Page</h2>
+<form asp-action="ProcessPayment" method="post">
+    <div class="form-group">
+        <label asp-for="CardNumber"></label>
+        <input asp-for="CardNumber" class="form-control" required />
+        <span asp-validation-for="CardNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ExpiryDate"></label>
+        <input asp-for="ExpiryDate" class="form-control" required />
+        <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Cvc"></label>
+        <input asp-for="Cvc" class="form-control" required />
+        <span asp-validation-for="Cvc" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="ProductId" />
+    <input type="hidden" asp-for="Quantity" />
+    <button type="submit" class="btn btn-primary">Submit Payment</button>
+</form>

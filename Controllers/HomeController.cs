@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Security.Claims;
-using WebApplicationPOE1.Models;
+using System.Threading.Tasks;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using WebApplicationPOE1.Models;
 using WebApplicationPOE1.ViewModels;
 
@@ -12,17 +14,17 @@ namespace WebApplicationPOE1.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IDurableClient _durableClient;
 
-        public HomeController(ApplicationDbContext dbContext)
+        public HomeController(ApplicationDbContext dbContext, IDurableClient durableClient)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _durableClient = durableClient ?? throw new ArgumentNullException(nameof(durableClient));
         }
 
         public IActionResult Index()
         {
             return View();
-            //return Content("Hello, this is the Index method!");
-
         }
 
         public IActionResult About()
@@ -40,27 +42,6 @@ namespace WebApplicationPOE1.Controllers
             return View();
         }
 
-    
-
-
-      /* public IActionResult MyWork()
-        {
-            var products = _dbContext.Products.Select(p => new ProductViewModel
-            {
-                ProductId = p.ProductId,
-                Name = p.Name,
-                Description = p.Description,
-                Price = p.Price,
-                ImageUrl = p.ImageUrl,
-            }).ToList();
-
-            return View(products);
-        }*/
-        // Handle form submission here
-
-
-
-        
         public IActionResult MyWork()
         {
             using (var command = _dbContext.Database.GetDbConnection().CreateCommand())
@@ -86,16 +67,13 @@ namespace WebApplicationPOE1.Controllers
             }
         }
 
-
-        // GET: Display the form to add a product
         public IActionResult AddProduct()
         {
             return View();
         }
 
-        // POST: Handle form submission to add a product
         [HttpPost]
-        [ValidateAntiForgeryToken] // Add anti-forgery token to prevent CSRF attacks
+        [ValidateAntiForgeryToken]
         public IActionResult AddProduct(Product product)
         {
             if (ModelState.IsValid)
@@ -107,7 +85,6 @@ namespace WebApplicationPOE1.Controllers
             return View("AddProduct", product);
         }
 
-        // GET: Display the product detail page
         public IActionResult ProductDetail(int id)
         {
             var product = _dbContext.Products.FirstOrDefault(p => p.ProductId == id);
@@ -118,9 +95,8 @@ namespace WebApplicationPOE1.Controllers
             return View(product);
         }
 
-        // POST: Handle form submission to place an order
         [HttpPost]
-        [ValidateAntiForgeryToken] // Add anti-forgery token to prevent CSRF attacks
+        [ValidateAntiForgeryToken]
         public IActionResult PlaceOrder(int productId, int quantity)
         {
             var product = _dbContext.Products.Find(productId);
@@ -128,49 +104,63 @@ namespace WebApplicationPOE1.Controllers
             {
                 return NotFound();
             }
-            var transaction = new Transaction
+
+            var paymentViewModel = new PaymentViewModel
             {
                 ProductId = productId,
-                Quantity = quantity,
-                TotalAmount = product.Price * quantity, // Make sure Price is a numeric type
-                TransactionDate = DateTime.Now
-                // You may also set other transaction properties like UserId
+                Quantity = quantity
             };
-            _dbContext.Transactions.Add(transaction);
+
+            return View("Payment", paymentViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ProcessPayment(PaymentViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Payment", model);
+            }
+
+            var product = _dbContext.Products.Find(model.ProductId);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var order = new Order
+            {
+                ProductId = model.ProductId,
+                Quantity = model.Quantity,
+                TotalAmount = product.Price * model.Quantity,
+                UserId = GetUserId(),
+                OrderDate = DateTime.Now
+            };
+
+            _dbContext.Orders.Add(order);
             _dbContext.SaveChanges();
+
+            string instanceId = await _durableClient.StartNewAsync("OrderProcessingOrchestrator", order);
             return RedirectToAction("MyWork");
         }
 
-        // GET: Display previous orders
         public IActionResult Orders()
         {
-            // Retrieve previous orders from the database
             var transactions = _dbContext.Transactions.ToList();
             return View(transactions);
         }
 
-        // Action method to display client orders
         public IActionResult ClientOrders()
         {
-            // Retrieve client orders from the database
             var orders = _dbContext.Transactions.ToList();
-            // Pass the list of orders to the view
             return View(orders);
         }
 
-        // Method to get the current user's ID
         private string GetUserId()
         {
-            // Retrieve the user's ID from the HttpContext
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            // If user ID is not available (e.g., user not authenticated), return a default value or handle accordingly
-            if (string.IsNullOrEmpty(userId))
-            {
-                return "default_user_id"; // Provide a default value or handle the scenario
-            }
-
-            return userId;
+            return string.IsNullOrEmpty(userId) ? "default_user_id" : userId;
         }
     }
 }

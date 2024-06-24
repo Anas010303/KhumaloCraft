@@ -5,10 +5,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApplicationPOE1.Models;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+
+[assembly: FunctionsStartup(typeof(WebApplicationPOE1.Startup))]
 
 namespace WebApplicationPOE1
 {
-    public class Startup
+    public class Startup : FunctionsStartup
     {
         public Startup(IConfiguration configuration)
         {
@@ -17,18 +22,19 @@ namespace WebApplicationPOE1
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public override void Configure(IFunctionsHostBuilder builder)
         {
-            // Configure DbContext
-            services.AddDbContext<ApplicationDbContext>(options =>
+            // Register the ApplicationDbContext
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            // Configure MVC services
-            services.AddControllersWithViews();
+            // Add MVC services
+            builder.Services.AddControllersWithViews();
+
+            // Register Durable Client
+            
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
